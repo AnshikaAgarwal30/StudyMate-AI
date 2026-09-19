@@ -21,12 +21,19 @@ const MODEL = 'gemini-3.6-flash';
 // ======================================================
 
 const isQuotaError = (error) => {
+  const message = error?.message?.toLowerCase() || '';
+
   return (
     error?.status === 429 ||
     error?.code === 429 ||
-    error?.message?.includes('RESOURCE_EXHAUSTED') ||
-    error?.message?.includes('quota') ||
-    error?.message?.includes('Quota exceeded')
+    error?.status === 503 ||
+    error?.code === 503 ||
+    message.includes('resource_exhausted') ||
+    message.includes('quota') ||
+    message.includes('quota exceeded') ||
+    message.includes('unavailable') ||
+    message.includes('high demand') ||
+    message.includes('temporarily unavailable')
   );
 };
 
